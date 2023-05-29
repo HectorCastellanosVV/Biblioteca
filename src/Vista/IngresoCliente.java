@@ -4,12 +4,16 @@
  */
 package Vista;
 
+import Herramientas.ConvertirDate;
 import control.ClienteJpaController;
+import control.VisitaJpaController;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import modelo.Cliente;
+import modelo.Visita;
 
 /**
  *
@@ -18,12 +22,16 @@ import modelo.Cliente;
 public class IngresoCliente extends javax.swing.JFrame {
     private Cliente cliente;
     private ClienteJpaController clienteController;
+    private Visita visita;
+    private VisitaJpaController visitaController;
+    private ConvertirDate cd=new ConvertirDate();
     
     public IngresoCliente() {
         initComponents();
         initComponents();
         EntityManagerFactory emt=Persistence.createEntityManagerFactory("BibliotecaPPU");
         clienteController=new ClienteJpaController(emt);
+        visitaController=new VisitaJpaController(emt);
     }
 
     private void agregarCliente()
@@ -34,8 +42,8 @@ public class IngresoCliente extends javax.swing.JFrame {
         String nombreC=nombrelb.getText();
         String numeroT=numerolb.getText();
         String correoE=correolb.getText();
-        String fecha=date;
-        String hora=horalb.getText();
+        Date fecha=cd.ParseFecha(date);
+        Date hora=cd.ParseHora(horalb.getText());
         
         cliente=new Cliente();
         cliente.setNombre(nombreC);
@@ -43,7 +51,11 @@ public class IngresoCliente extends javax.swing.JFrame {
         cliente.setCorreo(correoE);
         
         clienteController.create(cliente);
-        
+        cliente.getIdUsuario();
+        visita=new Visita();
+        visita.setIdUsuario(cliente);
+        visita.setFecha(fecha);
+        visita.setHoraIngreso(hora);
         
     }
     @SuppressWarnings("unchecked")
@@ -198,19 +210,19 @@ public class IngresoCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void nombrelbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nombrelbMouseClicked
-        nombrelb.setText("");
+        nombrelb.setText(" ");
     }//GEN-LAST:event_nombrelbMouseClicked
 
     private void numerolbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_numerolbMouseClicked
-        numerolb.setText("");
+        numerolb.setText(" ");
     }//GEN-LAST:event_numerolbMouseClicked
 
     private void correolbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_correolbMouseClicked
-        correolb.setText("");
+        correolb.setText(" ");
     }//GEN-LAST:event_correolbMouseClicked
 
     private void horalbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_horalbMouseClicked
-        horalb.setText("");
+        horalb.setText(" ");
     }//GEN-LAST:event_horalbMouseClicked
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
